@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SZ Lab — Product & AI Development Studio</title>
+  <meta name="description" content="SZ Lab builds intelligent web platforms, mobile apps, and AI-powered products. Specialists in Generative AI and agent integration." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #080808;
+      --surface: #0f0f0f;
+      --card: #141414;
+      --card2: #1a1a1a;
+      --border: #222222;
+      --border2: #2e2e2e;
+      --grey-dim: #555;
+      --grey: #888;
+      --grey-lt: #aaa;
+      --white: #f0f0f0;
+      --white-bright: #fafafa;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ══ NAV ══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5vw;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; letter-spacing: 0.03em;
+      color: var(--white-bright); text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .logo-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%; background: var(--white-bright);
+      display: inline-block;
+    }
+    .nav-center { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-center a {
+      color: var(--grey); text-decoration: none;
+      font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-center a:hover { color: var(--white); }
+    .nav-cta {
+      padding: 0.6rem 1.4rem;
+      border: 1px solid var(--border2);
+      color: var(--grey-lt);
+      text-decoration: none;
+      font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .nav-cta:hover { border-color: var(--white); color: var(--white); }
+
+    /* ══ HERO ══ */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 5vw 8rem;
+      position: relative; overflow: hidden;
+    }
+    canvas#dots {
+      position: absolute; inset: 0;
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--border2);
+      padding: 0.4rem 0.9rem;
+      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--grey-lt); margin-bottom: 2.5rem;
+    }
+    .badge-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--white); animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6.5vw, 6.5rem);
+      font-weight: 400; line-height: 1.05;
+      max-width: 900px; margin-bottom: 2.2rem;
+      letter-spacing: -0.01em;
+    }
+    .hero h1 em { font-style: italic; color: var(--grey); }
+    .hero-bottom {
+      display: flex; align-items: flex-end;
+      justify-content: space-between; flex-wrap: wrap; gap: 2rem;
+    }
+    .hero-sub {
+      font-size: 1rem; color: var(--grey);
+      max-width: 440px; line-height: 1.85;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* ══ BUTTONS ══ */
+    .btn {
+      display: inline-block; padding: 0.85rem 2rem;
+      border: 1px solid var(--white); color: var(--white);
+      text-decoration: none; font-size: 0.78rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      transition: background 0.2s, color 0.2s; cursor: pointer;
+    }
+    .btn:hover { background: var(--white); color: var(--black); }
+    .btn-outline {
+      border-color: var(--border2); color: var(--grey);
+    }
+    .btn-outline:hover { border-color: var(--grey); color: var(--white); background: transparent; }
+
+    /* ══ STATS BAR ══ */
+    .stats-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 5vw;
+      display: flex; justify-content: space-between;
+      flex-wrap: wrap; gap: 2rem;
+    }
+    .stat { text-align: center; flex: 1; min-width: 100px; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem; font-weight: 400; display: block;
+      line-height: 1; margin-bottom: 0.4rem;
+    }
+    .stat-label {
+      font-size: 0.72rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--grey);
+    }
+
+    /* ══ SECTION BASE ══ */
+    section { padding: 7rem 5vw; }
+    .section-label {
+      font-size: 0.68rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--grey-dim);
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.7rem;
+    }
+    .section-label::before {
+      content: ''; display: block;
+      width: 24px; height: 1px; background: var(--grey-dim);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 3.5vw, 3rem);
+      font-weight: 400; line-height: 1.15; margin-bottom: 1.2rem;
+    }
+    .section-sub {
+      color: var(--grey); font-size: 0.95rem;
+      max-width: 540px; line-height: 1.85;
+    }
+
+    /* ══ MARQUEE / TECH STRIP ══ */
+    .tech-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden; padding: 1.2rem 0; background: var(--surface);
+    }
+    .marquee-track {
+      display: flex; gap: 3.5rem; width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .tech-item {
+      font-size: 0.72rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--grey-dim);
+      white-space: nowrap; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .tech-item::before { content:'·'; color: var(--border2); }
+
+    /* ══ SERVICES ══ */
+    .services-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; flex-wrap: wrap; gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      border: 1px solid var(--border);
+    }
+    .service-card {
+      background: var(--card);
+      padding: 2.8rem 2.4rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .service-card:hover { background: var(--card2); }
+    .service-card::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 2px;
+      background: var(--white-bright);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .service-card:hover::after { transform: scaleX(1); }
+    .svc-num {
+      font-size: 0.62rem; letter-spacing: 0.18em;
+      color: var(--grey-dim); margin-bottom: 2rem; display: block;
+    }
+    .svc-icon {
+      width: 40px; height: 40px; margin-bottom: 1.6rem; opacity: 0.6;
+    }
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 500; margin-bottom: 0.9rem;
+    }
+    .service-card p { color: var(--grey); font-size: 0.87rem; line-height: 1.8; }
+    .svc-tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.5rem;
+    }
+    .tag {
+      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--grey-dim); border: 1px solid var(--border);
+      padding: 0.25rem 0.6rem;
+    }
+
+    /* ══ CASE STUDIES ══ */
+    .cases-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .cases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 4rem; background: var(--border); }
+    .case-card {
+      background: var(--card);
+      padding: 3rem 2.8rem;
+      transition: background 0.3s; cursor: pointer;
+    }
+    .case-card:hover { background: var(--card2); }
+    .case-tag {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--grey-dim); display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .case-tag span { width: 18px; height: 1px; background: var(--grey-dim); display: inline-block; }
+    .case-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 400;
+      margin-bottom: 1rem; line-height: 1.25;
+    }
+    .case-card p { color: var(--grey); font-size: 0.87rem; line-height: 1.8; margin-bottom: 2rem; }
+    .case-result {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+      padding-top: 1.8rem; border-top: 1px solid var(--border);
+    }
+    .result-item { }
+    .result-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; display: block; line-height: 1;
+    }
+    .result-desc { font-size: 0.75rem; color: var(--grey); margin-top: 0.25rem; }
+
+    /* ══ TESTIMONIALS ══ */
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      margin-top: 4rem;
+    }
+    .testi-card {
+      background: var(--card);
+      padding: 2.8rem 2.4rem;
+    }
+    .stars { color: var(--white); font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 1.4rem; }
+    .testi-card blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-style: italic; font-weight: 400;
+      line-height: 1.65; color: var(--white);
+      margin-bottom: 1.8rem;
+    }
+    .testi-author { display: flex; align-items: center; gap: 0.9rem; }
+    .author-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--border2); border: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 500; color: var(--grey-lt);
+      flex-shrink: 0;
+    }
+    .author-name { font-size: 0.85rem; font-weight: 500; line-height: 1.3; }
+    .author-role { font-size: 0.75rem; color: var(--grey); }
+
+    /* ══ AI SECTION ══ */
+    .ai-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .ai-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 7rem; align-items: start;
+    }
+    .ai-features { margin-top: 3rem; display: flex; flex-direction: column; }
+    .ai-feat {
+      display: flex; gap: 1.4rem; align-items: flex-start;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: padding-left 0.2s;
+    }
+    .ai-feat:hover { padding-left: 0.5rem; }
+    .ai-feat:first-child { padding-top: 0; }
+    .feat-num {
+      font-size: 0.6rem; letter-spacing: 0.15em;
+      color: var(--grey-dim); padding-top: 0.2rem;
+      flex-shrink: 0; width: 24px;
+    }
+    .feat-body h4 { font-size: 0.92rem; font-weight: 500; margin-bottom: 0.35rem; }
+    .feat-body p { color: var(--grey); font-size: 0.84rem; line-height: 1.75; }
+    .ai-right { padding-top: 1rem; }
+    .ai-callout {
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .ai-callout-label {
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--grey-dim); margin-bottom: 1rem;
+    }
+    .ai-callout-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-style: italic;
+      line-height: 1.5; color: var(--grey-lt);
+    }
+    .tech-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--border); margin-top: 1.5rem;
+    }
+    .tech-cell {
+      background: var(--card);
+      padding: 1.2rem 1.4rem;
+      font-size: 0.78rem; color: var(--grey);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .tech-cell::before {
+      content: ''; display: block;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--grey-dim); flex-shrink: 0;
+    }
+
+    /* ══ PROCESS ══ */
+    .process-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 5rem;
+    }
+    .process-step {
+      padding: 2.5rem 2rem 2.5rem 0;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .process-step:last-child { border-right: none; }
+    .process-step:not(:first-child) { padding-left: 2rem; padding-right: 2rem; }
+    .process-step:last-child { padding-right: 0; }
+    .p-num {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--grey-dim); display: block; margin-bottom: 1.5rem;
+    }
+    .p-connector {
+      position: absolute; top: 2.5rem; right: -8px;
+      width: 15px; height: 1px; background: var(--border2); z-index: 1;
+    }
+    .process-step:last-child .p-connector { display: none; }
+    .process-step h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 400; margin-bottom: 0.7rem;
+    }
+    .process-step p { color: var(--grey); font-size: 0.84rem; line-height: 1.8; }
+
+    /* ══ FAQ ══ */
+    .faq-list { margin-top: 4rem; max-width: 720px; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.6rem 0; cursor: pointer; gap: 1rem;
+    }
+    .faq-q span { font-size: 0.95rem; font-weight: 400; }
+    .faq-icon {
+      width: 18px; height: 18px; flex-shrink: 0;
+      border: 1px solid var(--border2); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 0.9rem; color: var(--grey); transition: transform 0.2s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      color: var(--grey); font-size: 0.88rem;
+      line-height: 1.85; padding-bottom: 1.6rem;
+      display: none;
+    }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ══ TEAM ══ */
+    .team-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .team-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px; background: var(--border); margin-top: 4rem;
+    }
+    .team-card {
+      background: var(--card); padding: 2.5rem 2rem;
+    }
+    .team-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 1px solid var(--border2);
+      background: var(--card2);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; color: var(--grey-lt);
+      margin-bottom: 1.3rem;
+    }
+    .team-card h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.2rem; }
+    .team-role { font-size: 0.75rem; color: var(--grey); margin-bottom: 1rem; }
+    .team-bio { font-size: 0.82rem; color: var(--grey-dim); line-height: 1.75; }
+
+    /* ══ CONTACT ══ */
+    .contact-wrap {
+      display: grid; grid-template-columns: 1fr 1.2fr;
+      gap: 7rem; align-items: start;
+    }
+    .contact-info-block { }
+    .contact-detail { margin-top: 2.5rem; }
+    .contact-row {
+      display: flex; gap: 1.2rem; align-items: baseline;
+      padding: 1rem 0; border-bottom: 1px solid var(--border);
+    }
+    .contact-row:last-child { border-bottom: none; }
+    .c-label {
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--grey-dim); width: 56px; flex-shrink: 0;
+    }
+    .c-val { font-size: 0.88rem; color: var(--grey-lt); }
+    .trust-badges {
+      margin-top: 3rem; padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .trust-title {
+      font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--grey-dim); margin-bottom: 1.2rem;
+    }
+    .badges-row { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .trust-badge {
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.9rem;
+      font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--grey-dim);
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field label {
+      font-size: 0.66rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--grey-dim);
+    }
+    .field input, .field textarea, .field select {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--white); padding: 0.9rem 1rem;
+      font-family: 'Inter', sans-serif; font-size: 0.87rem; font-weight: 300;
+      outline: none; resize: none; width: 100%;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--grey); }
+    .field select option { background: var(--card); color: var(--white); }
+    .form-note { font-size: 0.76rem; color: var(--grey-dim); }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 4rem 5vw 2rem;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 4rem; padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .footer-brand .logo { font-size: 1.2rem; }
+    .footer-tagline { font-size: 0.85rem; color: var(--grey); margin-top: 1rem; line-height: 1.7; max-width: 220px; }
+    .footer-col h5 {
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--grey-dim); margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .footer-col ul a {
+      font-size: 0.84rem; color: var(--grey); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 1rem;
+      padding-top: 2rem;
+    }
+    .footer-bottom p { font-size: 0.76rem; color: var(--grey-dim); }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 900px) {
+      .nav-center { display: none; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .ai-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .process-row { grid-template-columns: 1fr 1fr; }
+      .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.6rem; }
+      .process-row { grid-template-columns: 1fr; }
+      .process-step { border-right: none; border-bottom: 1px solid var(--border); padding: 2rem 0; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) { canvas#dots { display: none; } }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a class="logo" href="#"><span class="logo-dot"></span>SZ Lab</a>
+  <ul class="nav-center">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#ai">Generative AI</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Start a Project</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <canvas id="dots"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Available for new projects — 2025
+    </div>
+    <h1>We build products<br>that <em>people trust</em><br>and businesses scale.</h1>
+    <div class="hero-bottom">
+      <p class="hero-sub">SZ Lab is a full-service product studio. We design and engineer web platforms, mobile apps, and AI-powered systems — from first idea to live product.</p>
+      <div class="hero-actions">
+        <a href="#work" class="btn">See Our Work</a>
+        <a href="#contact" class="btn btn-outline">Talk to Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-num">40+</span>
+    <span class="stat-label">Products Shipped</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">98%</span>
+    <span class="stat-label">Client Satisfaction</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">12+</span>
+    <span class="stat-label">AI Projects Delivered</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">4</span>
+    <span class="stat-label">Years in Business</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">3</span>
+    <span class="stat-label">Continents Served</span>
+  </div>
+</div>
+
+<!-- ══ TECH MARQUEE ══ -->
+<div class="tech-strip">
+  <div class="marquee-track" id="marquee">
+    <span class="tech-item">React &amp; Next.js</span>
+    <span class="tech-item">React Native</span>
+    <span class="tech-item">Node.js</span>
+    <span class="tech-item">Python</span>
+    <span class="tech-item">OpenAI API</span>
+    <span class="tech-item">LangChain</span>
+    <span class="tech-item">LlamaIndex</span>
+    <span class="tech-item">PostgreSQL</span>
+    <span class="tech-item">AWS &amp; GCP</span>
+    <span class="tech-item">Supabase</span>
+    <span class="tech-item">Figma</span>
+    <span class="tech-item">FastAPI</span>
+    <span class="tech-item">TypeScript</span>
+    <span class="tech-item">Pinecone</span>
+    <span class="tech-item">Docker &amp; Kubernetes</span>
+    <!-- duplicate for seamless loop -->
+    <span class="tech-item">React &amp; Next.js</span>
+    <span class="tech-item">React Native</span>
+    <span class="tech-item">Node.js</span>
+    <span class="tech-item">Python</span>
+    <span class="tech-item">OpenAI API</span>
+    <span class="tech-item">LangChain</span>
+    <span class="tech-item">LlamaIndex</span>
+    <span class="tech-item">PostgreSQL</span>
+    <span class="tech-item">AWS &amp; GCP</span>
+    <span class="tech-item">Supabase</span>
+    <span class="tech-item">Figma</span>
+    <span class="tech-item">FastAPI</span>
+    <span class="tech-item">TypeScript</span>
+    <span class="tech-item">Pinecone</span>
+    <span class="tech-item">Docker &amp; Kubernetes</span>
+  </div>
+</div>
+
+<!-- ══ SERVICES ══ -->
+<section id="services">
+  <div class="services-header">
+    <div>
+      <p class="section-label">Services</p>
+      <h2 class="section-title">Everything you need<br>to ship great software.</h2>
+    </div>
+    <p class="section-sub">We handle the full stack — design, engineering, and intelligence — so you don't have to stitch together multiple vendors.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="svc-num">01</span>
+      <svg class="svc-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.1">
+        <rect x="3" y="7" width="34" height="24" rx="1.5"/>
+        <line x1="10" y1="31" x2="10" y2="36"/><line x1="30" y1="31" x2="30" y2="36"/>
+        <line x1="6" y1="36" x2="34" y2="36"/>
+        <line x1="3" y1="25" x2="37" y2="25"/>
+        <circle cx="20" cy="16" r="3"/>
+      </svg>
+      <h3>Web Development</h3>
+      <p>High-performance web applications built with modern frameworks. SaaS platforms, marketing sites, dashboards, and complex internal tools — built to last.</p>
+      <div class="svc-tags">
+        <span class="tag">Next.js</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">TypeScript</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="svc-num">02</span>
+      <svg class="svc-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.1">
+        <rect x="12" y="3" width="16" height="34" rx="2.5"/>
+        <line x1="20" y1="31" x2="20" y2="31" stroke-linecap="round" stroke-width="2"/>
+        <line x1="16" y1="8" x2="24" y2="8"/>
+      </svg>
+      <h3>Mobile Apps</h3>
+      <p>Cross-platform iOS and Android applications that feel native and perform flawlessly. From onboarding to core features — designed around real user behaviour.</p>
+      <div class="svc-tags">
+        <span class="tag">React Native</span><span class="tag">Expo</span><span class="tag">iOS</span><span class="tag">Android</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="svc-num">03</span>
+      <svg class="svc-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.1">
+        <circle cx="20" cy="20" r="6"/>
+        <path d="M20 6 L20 10M20 30 L20 34M6 20 L10 20M30 20 L34 20"/>
+        <circle cx="20" cy="20" r="14" stroke-dasharray="3 3"/>
+      </svg>
+      <h3>AI Integration</h3>
+      <p>Generative AI, agent systems, intelligent search, and automation — embedded into your product from the ground up, not added as an afterthought.</p>
+      <div class="svc-tags">
+        <span class="tag">OpenAI</span><span class="tag">LangChain</span><span class="tag">RAG</span><span class="tag">Agents</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="svc-num">04</span>
+      <svg class="svc-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.1">
+        <rect x="5" y="12" width="30" height="20" rx="1"/>
+        <path d="M13 12 L13 8 L27 8 L27 12"/>
+        <line x1="5" y1="20" x2="35" y2="20"/>
+        <circle cx="20" cy="26" r="2"/>
+      </svg>
+      <h3>UI/UX Design</h3>
+      <p>Research-driven design that converts. Wireframes, interactive prototypes, and production-ready design systems built in Figma before a single component is coded.</p>
+      <div class="svc-tags">
+        <span class="tag">Figma</span><span class="tag">Prototyping</span><span class="tag">Design Systems</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="svc-num">05</span>
+      <svg class="svc-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.1">
+        <rect x="4" y="4" width="14" height="14" rx="1"/>
+        <rect x="22" y="4" width="14" height="14" rx="1"/>
+        <rect x="4" y="22" width="14" height="14" rx="1"/>
+        <rect x="22" y="22" width="14" height="14" rx="1"/>
+        <line x1="18" y1="11" x2="22" y2="11"/>
+        <line x1="20" y1="18" x2="20" y2="22"/>
+      </svg>
+      <h3>Backend & APIs</h3>
+      <p>Scalable server architecture, RESTful and GraphQL APIs, cloud infrastructure, and database design. Built to handle the load when your product takes off.</p>
+      <div class="svc-tags">
+        <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">AWS</span><span class="tag">PostgreSQL</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="svc-num">06</span>
+      <svg class="svc-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.1">
+        <path d="M8 32 L8 22 L14 15 L20 22 L26 12 L32 18 L32 32 Z"/>
+        <line x1="4" y1="32" x2="36" y2="32"/>
+      </svg>
+      <h3>Product Strategy</h3>
+      <p>We help you make the right decisions early — scope, architecture, tech stack, and go-to-market. Expensive mistakes happen before the build starts.</p>
+      <div class="svc-tags">
+        <span class="tag">Discovery</span><span class="tag">Roadmapping</span><span class="tag">Architecture</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CASE STUDIES ══ -->
+<section class="cases-section" id="work">
+  <p class="section-label">Selected Work</p>
+  <h2 class="section-title">Projects we're proud of.</h2>
+  <p class="section-sub">A sample of what we've built — each representing a real challenge, a deliberate solution, and a measurable outcome.</p>
+
+  <div class="cases-grid">
+    <div class="case-card">
+      <p class="case-tag"><span></span>SaaS · Web Platform</p>
+      <h3>AI-Powered Legal Document Assistant</h3>
+      <p>A B2B SaaS platform for a legal tech startup that lets law firms upload contracts and instantly receive risk summaries, clause explanations, and negotiation suggestions — powered by a custom RAG pipeline over their document library.</p>
+      <div class="case-result">
+        <div class="result-item">
+          <span class="result-num">73%</span>
+          <p class="result-desc">Reduction in review time</p>
+        </div>
+        <div class="result-item">
+          <span class="result-num">2,400+</span>
+          <p class="result-desc">Documents processed monthly</p>
+        </div>
+      </div>
+    </div>
+    <div class="case-card">
+      <p class="case-tag"><span></span>Mobile App · iOS &amp; Android</p>
+      <h3>On-Demand Field Service Management App</h3>
+      <p>A dual-sided mobile app for a facilities management company — one interface for dispatchers, one for field technicians. Real-time job tracking, offline support, and automated reporting cut their operations overhead in half.</p>
+      <div class="case-result">
+        <div class="result-item">
+          <span class="result-num">4.8★</span>
+          <p class="result-desc">App Store rating</p>
+        </div>
+        <div class="result-item">
+          <span class="result-num">50%</span>
+          <p class="result-desc">Faster job completion</p>
+        </div>
+      </div>
+    </div>
+    <div class="case-card">
+      <p class="case-tag"><span></span>AI Agent · Workflow Automation</p>
+      <h3>Autonomous Sales Outreach Agent</h3>
+      <p>An AI agent system for a growth-stage startup that researches prospects, personalises outreach, manages follow-ups, and logs everything to their CRM — running 24/7 without a dedicated SDR team.</p>
+      <div class="case-result">
+        <div class="result-item">
+          <span class="result-num">3×</span>
+          <p class="result-desc">Pipeline growth in 60 days</p>
+        </div>
+        <div class="result-item">
+          <span class="result-num">$0</span>
+          <p class="result-desc">SDR headcount added</p>
+        </div>
+      </div>
+    </div>
+    <div class="case-card">
+      <p class="case-tag"><span></span>E-commerce · Full-stack</p>
+      <h3>Custom E-commerce Platform with AI Recommendations</h3>
+      <p>A headless e-commerce platform for a specialty retailer, replacing their legacy Shopify setup. Built-in AI recommendation engine, real-time inventory sync, and a custom CMS gave them full control over their brand and margins.</p>
+      <div class="case-result">
+        <div class="result-item">
+          <span class="result-num">+34%</span>
+          <p class="result-desc">Average order value</p>
+        </div>
+        <div class="result-item">
+          <span class="result-num">2.1s</span>
+          <p class="result-desc">Page load time (vs 6.4s)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section>
+  <p class="section-label">Client Feedback</p>
+  <h2 class="section-title">What our clients say.</h2>
+
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>"SZ Lab didn't just build what we asked for — they challenged our assumptions early and saved us from building the wrong thing. The final product is faster, simpler, and far better than our original spec."</blockquote>
+      <div class="testi-author">
+        <div class="author-avatar">RS</div>
+        <div>
+          <p class="author-name">Rahul Sharma</p>
+          <p class="author-role">CEO, Vaultify (Singapore)</p>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>"The AI agent they built for our sales team has genuinely changed how we operate. We were sceptical about the ROI going in. Within 90 days, the pipeline numbers made it an obvious decision."</blockquote>
+      <div class="testi-author">
+        <div class="author-avatar">MK</div>
+        <div>
+          <p class="author-name">Mia Karlsson</p>
+          <p class="author-role">VP Growth, Nordia Partners (Sweden)</p>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>"We've worked with agencies before. SZ Lab felt different from the first call — they asked better questions, communicated proactively, and delivered exactly on time. We've already engaged them for our next phase."</blockquote>
+      <div class="testi-author">
+        <div class="author-avatar">JO</div>
+        <div>
+          <p class="author-name">James Okonkwo</p>
+          <p class="author-role">CTO, BridgeWork (UK)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AI SECTION ══ -->
+<section class="ai-section" id="ai">
+  <div class="ai-inner">
+    <div>
+      <p class="section-label">Generative AI</p>
+      <h2 class="section-title">AI that works inside<br>your business — not<br>alongside it.</h2>
+      <p class="section-sub">We build custom generative AI systems. Not wrappers around ChatGPT, but deeply integrated agents and pipelines that understand your data and automate real work.</p>
+      <div class="ai-features">
+        <div class="ai-feat">
+          <span class="feat-num">01</span>
+          <div class="feat-body">
+            <h4>AI Agent Integration</h4>
+            <p>Autonomous agents that reason across tools — browsing the web, reading documents, calling APIs, and completing multi-step tasks without hand-holding.</p>
+          </div>
+        </div>
+        <div class="ai-feat">
+          <span class="feat-num">02</span>
+          <div class="feat-body">
+            <h4>RAG & Knowledge Systems</h4>
+            <p>Retrieval-augmented pipelines that give LLMs accurate, grounded access to your proprietary data — no hallucinations, no stale context.</p>
+          </div>
+        </div>
+        <div class="ai-feat">
+          <span class="feat-num">03</span>
+          <div class="feat-body">
+            <h4>Workflow Automation with LLMs</h4>
+            <p>Replace manual, repetitive knowledge work with AI pipelines that draft, classify, summarise, route, and respond — at scale.</p>
+          </div>
+        </div>
+        <div class="ai-feat">
+          <span class="feat-num">04</span>
+          <div class="feat-body">
+            <h4>LLM-Powered Product Features</h4>
+            <p>Intelligent search, conversational UIs, content generation, and smart recommendations — shipped as first-class product features.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ai-right">
+      <div class="ai-callout">
+        <p class="ai-callout-label">Our philosophy</p>
+        <p class="ai-callout-text">"The best AI systems are invisible. They make products faster and smarter without the user needing to think about the AI at all."</p>
+      </div>
+      <div class="tech-grid">
+        <div class="tech-cell">OpenAI / GPT-4o</div>
+        <div class="tech-cell">Anthropic Claude</div>
+        <div class="tech-cell">LangChain / LangGraph</div>
+        <div class="tech-cell">LlamaIndex</div>
+        <div class="tech-cell">Pinecone / Weaviate</div>
+        <div class="tech-cell">Hugging Face</div>
+        <div class="tech-cell">CrewAI / AutoGen</div>
+        <div class="tech-cell">Fine-tuning & LoRA</div>
+      </div>
+      <p style="font-size:0.78rem;color:var(--grey-dim);margin-top:1.2rem;line-height:1.7;">Every AI system we ship includes evaluation, monitoring, and a clear path to production. We don't hand over a notebook and call it done.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROCESS ══ -->
+<section id="process">
+  <p class="section-label">How We Work</p>
+  <h2 class="section-title">A clear process.<br>No surprises.</h2>
+  <p class="section-sub">We've refined this over 40+ projects. It's designed to keep you informed, catch problems early, and ship on schedule.</p>
+
+  <div class="process-row">
+    <div class="process-step">
+      <div class="p-connector"></div>
+      <span class="p-num">Week 1–2</span>
+      <h3>Discovery</h3>
+      <p>We learn your business, users, and constraints. You receive a written brief, technical spec, and timeline — before any work begins.</p>
+    </div>
+    <div class="process-step">
+      <div class="p-connector"></div>
+      <span class="p-num">Week 2–4</span>
+      <h3>Design</h3>
+      <p>Wireframes, architecture diagrams, and a working prototype in Figma. You approve before engineering starts.</p>
+    </div>
+    <div class="process-step">
+      <div class="p-connector"></div>
+      <span class="p-num">Ongoing</span>
+      <h3>Build</h3>
+      <p>Two-week sprints with a demo every cycle. You see real progress and can steer — not just wait for a big reveal.</p>
+    </div>
+    <div class="process-step">
+      <span class="p-num">Launch +</span>
+      <h3>Deliver & Support</h3>
+      <p>Staged deployment, QA, and a 30-day post-launch support window. We're here when the real-world edge cases appear.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TEAM ══ -->
+<section class="team-section" id="team">
+  <p class="section-label">The Team</p>
+  <h2 class="section-title">People behind the work.</h2>
+  <p class="section-sub">A small, experienced team. You work with the people who built the thing — not a project manager who relays messages.</p>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">SZ</div>
+      <h4>Sajan Maharjan</h4>
+      <p class="team-role">Founder & Lead Engineer</p>
+      <p class="team-bio">Full-stack engineer with 8+ years building B2B products. Previously led engineering at a fintech startup in Singapore.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">PK</div>
+      <h4>Priya Karmacharya</h4>
+      <p class="team-role">AI/ML Engineer</p>
+      <p class="team-bio">Specialist in LLM systems, RAG pipelines, and agent frameworks. MSc in Machine Learning from IIT Delhi.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">AM</div>
+      <h4>Aarav Mishra</h4>
+      <p class="team-role">Product Designer</p>
+      <p class="team-bio">5 years designing for SaaS and mobile. Obsesses over the gap between how something looks and how it actually works.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">NB</div>
+      <h4>Nisha Bajracharya</h4>
+      <p class="team-role">Backend & DevOps</p>
+      <p class="team-bio">Scales systems and keeps them running. Cloud-native infrastructure, API design, and the person you want on call during a launch.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section>
+  <p class="section-label">FAQ</p>
+  <h2 class="section-title">Common questions.</h2>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>How much does a typical project cost?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <p class="faq-a">Scope varies significantly, but most web or mobile projects fall between $12,000–$50,000 USD. AI integrations typically start at $8,000. We provide a detailed fixed-price quote after the discovery phase, so there are no surprises mid-project.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>How long does it take to build a product?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <p class="faq-a">An MVP typically takes 8–14 weeks from signed contract to launch. More complex products with multiple integrations may take 16–24 weeks. We'll give you a precise timeline during discovery, and we hold ourselves to it.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>Do you work with early-stage startups or only established companies?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <p class="faq-a">Both. We've built first products for founders with nothing but an idea, and we've extended engineering teams at companies with millions of users. The process adapts; the quality doesn't.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>Who owns the code and IP after the project?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <p class="faq-a">You do. All code, designs, and assets created for your project are fully yours upon final payment. No licensing fees, no lock-in, no strings attached.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>Can you integrate AI into an existing product?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <p class="faq-a">Yes — this is one of the most common requests we receive. We audit your existing codebase, identify the best integration points, and add AI features without disrupting what's already working. A discovery call is the best starting point.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">
+        <span>What happens after launch?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <p class="faq-a">Every project includes a 30-day post-launch support window at no extra cost. After that, we offer retainer agreements for ongoing development, maintenance, and iteration — many of our clients have been with us for multiple years.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact" style="background:var(--surface);border-top:1px solid var(--border);">
+  <div class="contact-wrap">
+    <div class="contact-info-block">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title">Ready to build?<br>Let's talk.</h2>
+      <p style="color:var(--grey);font-size:0.9rem;line-height:1.85;margin-top:1rem;max-width:340px;">We respond to every inquiry within 24 hours. If you're not sure what you need yet, that's fine — a 30-minute call is usually enough to map out the right path.</p>
+      <div class="contact-detail">
+        <div class="contact-row">
+          <span class="c-label">Email</span>
+          <span class="c-val">hello@szlab.io</span>
+        </div>
+        <div class="contact-row">
+          <span class="c-label">Based</span>
+          <span class="c-val">Kathmandu, Nepal</span>
+        </div>
+        <div class="contact-row">
+          <span class="c-label">Hours</span>
+          <span class="c-val">Mon – Fri, 9am – 6pm NPT</span>
+        </div>
+        <div class="contact-row">
+          <span class="c-label">Clients</span>
+          <span class="c-val">Global — remote-first</span>
+        </div>
+      </div>
+      <div class="trust-badges">
+        <p class="trust-title">Commitments</p>
+        <div class="badges-row">
+          <span class="trust-badge">NDA on request</span>
+          <span class="trust-badge">Fixed-price quotes</span>
+          <span class="trust-badge">You own the IP</span>
+          <span class="trust-badge">No lock-in</span>
+          <span class="trust-badge">24hr response</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="field">
+            <label>Full Name</label>
+            <input type="text" placeholder="Jane Smith" />
+          </div>
+          <div class="field">
+            <label>Company</label>
+            <input type="text" placeholder="Acme Inc." />
+          </div>
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" placeholder="jane@company.com" />
+        </div>
+        <div class="field">
+          <label>Type of Project</label>
+          <select>
+            <option value="">Select one...</option>
+            <option>Web Application</option>
+            <option>Mobile App</option>
+            <option>AI / Generative AI Integration</option>
+            <option>AI Agent System</option>
+            <option>Full Product (Web + Mobile + AI)</option>
+            <option>UI/UX Design</option>
+            <option>Other / Not sure yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tell us about your project</label>
+          <textarea rows="5" placeholder="What are you building, what problem does it solve, and where are you in the process? Any detail helps."></textarea>
+        </div>
+        <div class="field">
+          <label>Budget Range (USD)</label>
+          <select>
+            <option value="">Select range...</option>
+            <option>Under $10,000</option>
+            <option>$10,000 – $25,000</option>
+            <option>$25,000 – $50,000</option>
+            <option>$50,000 – $100,000</option>
+            <option>$100,000+</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <a href="mailto:hello@szlab.io" class="btn" style="text-align:center;display:block;">Send Inquiry</a>
+        <p class="form-note">We'll reply within 24 hours with next steps. No sales calls, no spam.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="logo" href="#"><span class="logo-dot"></span>SZ Lab</a>
+      <p class="footer-tagline">A product and AI studio building intelligent software for businesses that want to grow.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#services">Web Development</a></li>
+        <li><a href="#services">Mobile Apps</a></li>
+        <li><a href="#ai">AI Integration</a></li>
+        <li><a href="#services">UI/UX Design</a></li>
+        <li><a href="#services">Product Strategy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#work">Our Work</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Connect</h5>
+      <ul>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Twitter / X</a></li>
+        <li><a href="mailto:hello@szlab.io">hello@szlab.io</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 SZ Lab. All rights reserved. Kathmandu, Nepal.</p>
+    <p>Privacy Policy · Terms of Service</p>
+  </div>
+</footer>
+
+<script>
+  // ── DOT CANVAS ──
+  const canvas = document.getElementById('dots');
+  const ctx = canvas.getContext('2d');
+  let W, H, dots = [], mouse = { x: -9999, y: -9999 };
+  const SP = 44, R = 1, GD = 140;
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    dots = [];
+    for (let x = SP; x < W; x += SP)
+      for (let y = SP; y < H; y += SP)
+        dots.push({ x, y, b: Math.random() * 0.12 + 0.04 });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    dots.forEach(d => {
+      const dist = Math.hypot(d.x - mouse.x, d.y - mouse.y);
+      const g = dist < GD ? (1 - dist / GD) * 0.6 : 0;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, R + g * 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(240,240,240,${d.b + g})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  });
+  window.addEventListener('resize', resize);
+  resize(); draw();
+
+  // ── FAQ ACCORDION ──
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+</body>
+</html>
